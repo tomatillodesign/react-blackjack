@@ -8,6 +8,7 @@ import StandButton from './StandButton.js';
 import InfoSection from './InfoSection.js';
 import GameStatus from './GameStatus.js';
 import AboutPage from './AboutPage.js';
+import CheatArea from './CheatArea.js';
 
 import Logo from './MainMenu/Logo.js';
 
@@ -15,21 +16,20 @@ import Logo from './MainMenu/Logo.js';
 
 7/15 TODO
 
-- House logic for dealing more cards after player stands, incl reveal hidden house card
-- Show player/house point total at the top after stand
-- Remove the RESET button and place up in main menu ("start over")
+- House logic for dealing more cards after player stands, incl reveal hidden house card ✔
+- Show player/house point total at the top after stand ✔ 
+- Remove the RESET button and place up in main menu ("start over") ✔
 - Remove winnings
-- Add a modal or similar for a simple About page when clicked
-- Export version 1.0 to Github
+- Add a modal or similar for a simple About page when clicked ✔
+- Export version 1.0 to Github ✔
 
 
 
 TROUBLESHOOT
-- Wrong message if house has 21 exactly, saying that player wins
+- Wrong message if house has 21 exactly, saying that player wins ✔
 
 --------------------- */
-
-const originalDeck = [
+const deck = [
                          {
                               id: '2C',
                               name: 'Two of Clubs',
@@ -499,6 +499,7 @@ const originalDeck = [
                               color: 'black'
                          }
                     ];
+const originalDeck = [...deck, ...deck, ...deck, ...deck, ...deck, ...deck];
 
 class Game extends Component {
     
@@ -524,7 +525,8 @@ class Game extends Component {
                houseRoundsWon : 0,
                roundsTied : 0,
                winnings : 1000,
-               isAboutPageActive : false
+               isAboutPageActive : false,
+               isViewingCheats : false
             
           }
           
@@ -538,6 +540,7 @@ class Game extends Component {
           this.updateHouseCards = this.updateHouseCards.bind(this);
           this.renderDisplayCard = this.renderDisplayCard.bind(this);
           this.viewAboutPage = this.viewAboutPage.bind(this);
+          this.viewCheats = this.viewCheats.bind(this);
         
      }
     
@@ -623,7 +626,7 @@ class Game extends Component {
      startGame() {
           
           this.setState((prevState) => ({
-               deck : originalDeck,
+               //deck : originalDeck,
                isGameActive : true,
                playerCards : [],
                playerPoints : 0,
@@ -632,7 +635,7 @@ class Game extends Component {
                housePoints : 0,
                houseCardCount : 0,
                revealHouse : false,
-               allPlayedCards : [],
+               // allPlayedCards : [],
                handWinner : null,
                typeOfWin : null,
           }));
@@ -657,7 +660,7 @@ class Game extends Component {
          this.setState((prevState) => ({
             deck : originalDeck,
             isGameActive : false,
-            allPlayedCards : [],
+          //   allPlayedCards : [],
             playerCards : [],
             playerPoints : 0,
             houseCards : [],
@@ -806,7 +809,13 @@ class Game extends Component {
           }));
      }
      
-    
+     viewCheats() {
+          this.setState((prevState) => ({
+               isViewingCheats : !prevState.isViewingCheats
+          }));
+     }
+     
+     
     
     render() {
          
@@ -825,7 +834,13 @@ class Game extends Component {
      let playerCards = <div className="player-cards"><div className="card-heading">Player Cards</div><InfoSection whichPlayer={'Player'} isGameActive={isGameActive} points={this.state.playerPoints} />{this.state.playerCards.map(this.renderDisplayCard)}</div>;
      let houseCards = <div className="house-cards"><div className="card-heading">House Cards</div><InfoSection whichPlayer={'House'} isGameActive={isGameActive} points={this.state.housePoints} revealHouse={revealHouse} />{this.state.houseCards.map(this.renderDisplayCard)}</div>;
      
-     console.log("ABOUT ACTIVE: " + this.state.isAboutPageActive);
+     
+     // Cheats :)
+     let remainingCardsArray = this.state.deck.filter(x => !this.state.allPlayedCards.includes(x));
+     console.log(this.state.allPlayedCards.length)
+     console.log("DIFFERENCE: " + remainingCardsArray.length);
+     
+     //console.log("ABOUT ACTIVE: " + this.state.isAboutPageActive);
      
      // console.log(`Player point total: ${this.state.playerPoints}`);
      // console.log(`House point total: ${this.state.housePoints}`);
@@ -859,6 +874,7 @@ class Game extends Component {
                     <StandButton isGameActive={isGameActive} onClick={this.standWinCheck} />
                </div>
                <StartButton isGameActive={isGameActive} startGame={this.startGame} resetGame={this.resetGame} winner={handWinner} />
+               <CheatArea viewCheats={this.viewCheats} isActive={this.state.isViewingCheats} isGameActive={isGameActive} remainingCardsArray={remainingCardsArray} allPlayedCards={this.state.allPlayedCards} playerPoints={this.state.playerPoints} />
             </div>
             </div>
         );

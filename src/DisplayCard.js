@@ -14,7 +14,7 @@ export default function DisplayCard(props) {
     let hiddenKey = getRandomInt(10000);
     
     return(
-      <div className={'playing-card hidden'} key={hiddenKey}>
+      <div className={'playing-card hidden-card'} key={hiddenKey}>
         <div className="playing-card-name">? ? ?</div>
       </div>
     );

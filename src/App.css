@@ -100,6 +100,7 @@
   height: 140px;
   background: #fff;
   box-shadow: 4px 4px 8px rgba(0,0,0,.4);
+  float: left;
 }
 
 .playing-card.black {
@@ -280,4 +281,17 @@ body {
 
 .playing-card {
   box-sizing: content-box !important;
+}
+
+#show-cheats-button {
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+#show-cheats-button:hover {
+  cursor: pointer;
+}
+
+#cheat-area {
+  font-size: 12px;
 }

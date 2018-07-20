@@ -7,12 +7,9 @@ export default function StartResetButton(props) {
     
     if( props.isGameActive === true ) {
 
-        // buttonText = 'Reset Game';
-        // buttonClass = 'game-active';
-        // return <div className="start-button-area"><button type="button" id="start-reset-button" className={buttonClass} onClick={props.resetGame}>{buttonText}</button></div>;
         return null;
-    } else 
-    if( props.isGameActive === false && props.winner ) {
+        
+    } else if( props.isGameActive === false && props.winner ) {
 
         buttonText = 'Deal Next Hand';
         buttonClass = 'game-inactive';
