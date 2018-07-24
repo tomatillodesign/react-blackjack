@@ -14,18 +14,21 @@ import Logo from './MainMenu/Logo.js';
 
 /* ---------------------
 
+7/19 TODO
+- Aces (test before wincheck, adjust accordingly)
+
 7/15 TODO
 
 - House logic for dealing more cards after player stands, incl reveal hidden house card ✔
 - Show player/house point total at the top after stand ✔ 
 - Remove the RESET button and place up in main menu ("start over") ✔
-- Remove winnings
+- Display winnings ✔
 - Add a modal or similar for a simple About page when clicked ✔
 - Export version 1.0 to Github ✔
 
 
 
-TROUBLESHOOT
+FIXED
 - Wrong message if house has 21 exactly, saying that player wins ✔
 
 --------------------- */
@@ -541,6 +544,7 @@ class Game extends Component {
           this.renderDisplayCard = this.renderDisplayCard.bind(this);
           this.viewAboutPage = this.viewAboutPage.bind(this);
           this.viewCheats = this.viewCheats.bind(this);
+          this.acesCheck = this.acesCheck.bind(this);
         
      }
     
@@ -689,8 +693,11 @@ class Game extends Component {
          
           let   playerPoints = this.state.playerPoints + lastCardValue,
                 housePoints = this.state.housePoints;
+                
+          let acesResult = this.acesCheck(this.state.playerCards);
                
           if( playerPoints > 21 ) {
+               
                this.setState((prevState) => ({
                     isGameActive : false,
                     revealHouse : true,
@@ -814,6 +821,56 @@ class Game extends Component {
                isViewingCheats : !prevState.isViewingCheats
           }));
      }
+     
+     
+     
+     // Check for Aces. If there's an Ace and the player goes over 21, set the Ace points to 1 instead of 11
+     acesCheck(hand) {
+
+     // let newHandTotal = this.state.
+
+     //      //hand has an ace and point total is over 21
+     //      if(  ) {
+     //           hand.total -= 10;
+     //      }
+          
+     //      return newHandTotal;
+     
+     
+     let testArray = [
+          {
+               id: 'AC',
+               name: 'Ace of Clubs',
+               suitCode: '&#9827;',
+               value: 11,
+               isPlayed: false, 
+               isHiddenCard: false,
+               color: 'black'
+          }];
+     
+     //let containsAce = testArray.includes('value');
+     
+     // function isCherries(fruit) { 
+     //    return fruit.name === 'cherries';
+     // }
+     
+     // var found = testArray.find(function(element) {
+     //   return element === 11;
+     // });
+     
+     let containsAce = hand.find( card => card.value === 11 );
+     
+     if( containsAce === undefined ) {
+          containsAce = null;
+     } else if( this.state.playerPoints > 21 ) {
+          containsAce.value = 1;
+     }
+
+     console.log(`AcesCheck = ${JSON.stringify(containsAce)}`);
+          
+     }
+     
+     
      
      
     
